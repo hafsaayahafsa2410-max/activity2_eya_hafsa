@@ -1,15 +1,17 @@
-package business;
+package org.example.business;
 /*
  * DoctorManager.java
  * This is where our “logic” for doctors lives.
  * The important part is: it talks to DoctorRepository (the interface), not the in-memory class directly.
  * It basically controls doctor operations and can be the place to add validation/rules later.
  */
-import data.DoctorRepository;
-import model.Doctor;
+import org.example.data.DoctorRepository;
+import org.example.model.Doctor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class DoctorManager {
     private DoctorRepository repo;
 

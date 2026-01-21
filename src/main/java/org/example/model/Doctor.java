@@ -1,4 +1,4 @@
-package model;
+package org.example.model;
 /*
  * Doctor.java
  * This class represents a Doctor in our system.

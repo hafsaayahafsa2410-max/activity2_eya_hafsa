@@ -1,15 +1,16 @@
-package business;
+package org.example.business;
 /*
  * PatientManager.java 
  * Same idea as DoctorManager, but for patients.
  * It depends on the PatientRepository interface only.
  * It handles patient CRUD + searching + sorting, and it’s the clean middle layer between UI and data.
  */
-import data.PatientRepository;
-import model.Patient;
+import org.example.data.PatientRepository;
+import org.example.model.Patient;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public class PatientManager {
     private final PatientRepository repo;
 

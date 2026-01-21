@@ -1,18 +1,16 @@
-package ui;
-/*
- * CommandLineUI.java
- * This is the console menu the user interacts with.
- * It prints options, reads input using Scanner, and calls AppFacade to do the real work.
- * The UI doesn’t touch repositories directly it only uses the facade.
- */
-import app.AppFacade;
-import model.Doctor;
-import model.Patient;
+package org.example.ui;
+
+import org.example.app.AppFacade;
+import org.example.model.Doctor;
+import org.example.model.Patient;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Scanner;
 
+@Component
 public class CommandLineUI {
+
     private final AppFacade app;
     private final Scanner scanner;
 

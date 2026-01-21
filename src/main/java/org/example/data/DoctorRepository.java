@@ -1,4 +1,4 @@
-package data;
+package org.example.data;
 /*
  * DoctorRepository.java
  * This is the repository interface for Doctor.
@@ -7,7 +7,7 @@ package data;
  * - findByName(): to search doctors by name
  * The business layer talks to this interface only .
  */
-import model.Doctor;
+import org.example.model.Doctor;
 import java.util.List;
 
 public interface DoctorRepository extends CrudRepository<Doctor> {

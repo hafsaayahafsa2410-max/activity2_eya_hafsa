@@ -1,4 +1,4 @@
-package data;
+package org.example.data;
 /*
  * CrudRepository.java
  * This is the generic CRUD interface that defines the basic operations:

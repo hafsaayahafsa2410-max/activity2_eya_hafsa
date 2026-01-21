@@ -1,10 +1,12 @@
-package data;
+package org.example.data;
 
 
-import model.Patient;
+import org.example.model.Patient;
+import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
+@Repository
 public class InMemoryPatientRepository implements PatientRepository {
 
     private final Map<Integer, Patient> patients = new HashMap<>();

@@ -1,4 +1,4 @@
-package data;
+package org.example.data;
 /*
  * InMemoryDoctorRepository.java
  * This is the in-memory implementation for DoctorRepository.
@@ -6,10 +6,13 @@ package data;
  * we also support sorting by name and searching by name.
  * Later, if we wanted a real database, we could replace this class without changing the business layer.
  */
-import model.Doctor;
+import org.example.model.Doctor;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+@Repository
 public class InMemoryDoctorRepository implements DoctorRepository {
 
     private final Map<Integer, Doctor> doctors = new HashMap<>();

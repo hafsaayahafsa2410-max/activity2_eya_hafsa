@@ -1,6 +1,6 @@
-package data;
+package org.example.data;
 
-import model.Patient;
+import org.example.model.Patient;
 import java.util.List;
 
 public interface PatientRepository extends CrudRepository<Patient> {
