@@ -10,7 +10,6 @@ import java.util.List;
 
 @Service
 public class AppFacade {
-
     private final DoctorManager doctorManager;
     private final PatientManager patientManager;
 
@@ -19,7 +18,7 @@ public class AppFacade {
         this.patientManager = patientManager;
     }
 
-    //  Doctor operations
+    // ---------- Doctor operations ----------
     public Doctor saveDoctor(Doctor d) { return doctorManager.save(d); }
     public Doctor updateDoctor(Doctor d) { return doctorManager.update(d); }
     public boolean deleteDoctor(int id) { return doctorManager.delete(id); }
@@ -28,7 +27,7 @@ public class AppFacade {
     public List<Doctor> listDoctorsSortedByName() { return doctorManager.listSorted(); }
     public List<Doctor> findDoctorsByName(String name) { return doctorManager.findByName(name); }
 
-    //  Patient operations
+    // ---------- Patient operations ----------
     public Patient savePatient(Patient p) { return patientManager.save(p); }
     public Patient updatePatient(Patient p) { return patientManager.update(p); }
     public boolean deletePatient(int id) { return patientManager.delete(id); }
