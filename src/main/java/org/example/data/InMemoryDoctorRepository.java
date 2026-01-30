@@ -1,20 +1,12 @@
 package org.example.data;
-/*
- * InMemoryDoctorRepository.java
- * This is the in-memory implementation for DoctorRepository.
- * we store doctors in a HashMap (id -> Doctor) so find/delete are fast.
- * we also support sorting by name and searching by name.
- * Later, if we wanted a real database, we could replace this class without changing the business layer.
- */
+
 import org.example.model.Doctor;
 import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
 
 import java.util.*;
 
 @Repository
 public class InMemoryDoctorRepository implements DoctorRepository {
-
     private final Map<Integer, Doctor> doctors = new HashMap<>();
 
     @Override
@@ -47,10 +39,7 @@ public class InMemoryDoctorRepository implements DoctorRepository {
     @Override
     public List<Doctor> findAllByOrderByName() {
         List<Doctor> list = new ArrayList<>(doctors.values());
-        list.sort(Comparator.comparing(
-                Doctor::getName,
-                String.CASE_INSENSITIVE_ORDER
-        ));
+        list.sort(Comparator.comparing(Doctor::getName));
         return list;
     }
 
@@ -58,9 +47,7 @@ public class InMemoryDoctorRepository implements DoctorRepository {
     public List<Doctor> findByName(String name) {
         List<Doctor> result = new ArrayList<>();
         for (Doctor d : doctors.values()) {
-            if (d.getName() != null && d.getName().equalsIgnoreCase(name)) {
-                result.add(d);
-            }
+            if (d.getName().equalsIgnoreCase(name)) result.add(d);
         }
         return result;
     }
