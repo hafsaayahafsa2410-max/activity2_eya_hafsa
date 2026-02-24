@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Gemini LLM Integration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 32px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        pre {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+<h1>🧪 Test Gemini LLM Integration</h1>
+<p>Click the button below to fetch patient summaries from your Spring Boot app:</p>
+
+<button onclick="testLLM()">Get Patient Summaries</button>
+
+<h3>Response from your API:</h3>
+<pre id="result">Click the button to see results...</pre>
+
+<script>
+    async function testLLM() {
+        const resultElement = document.getElementById('result');
+        resultElement.textContent = 'Loading... please wait';
+
+        try {
+            // Call your Spring Boot endpoint
+            const response = await fetch('http://localhost:8080/llm/enrich-patients', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            // Format the JSON nicely for display
+            resultElement.innerHTML = JSON.stringify(data, null, 2);
+
+        } catch (error) {
+            resultElement.innerHTML = ' Error: ' + error.message + '\n\nMake sure your Spring Boot app is running on port 8080!';
+        }
+    }
+</script>
+</body>
+</html>

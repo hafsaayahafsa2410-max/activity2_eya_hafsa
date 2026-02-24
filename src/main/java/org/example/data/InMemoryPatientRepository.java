@@ -1,15 +1,24 @@
 package org.example.data;
 
-
 import org.example.model.Patient;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
+
 @Repository
 public class InMemoryPatientRepository implements PatientRepository {
 
     private final Map<Integer, Patient> patients = new HashMap<>();
+
+
+    public InMemoryPatientRepository() {
+        // Add sample patients
+        patients.put(1, new Patient(1, "John Doe", 45, 1));
+        patients.put(2, new Patient(2, "Alice Smith", 30, 2));
+        patients.put(3, new Patient(3, "Bob Johnson", 60, 1));
+        patients.put(4, new Patient(4, "Emma Wilson", 28, 2));
+    }
 
     @Override
     public Patient save(Patient p) {
@@ -54,5 +63,10 @@ public class InMemoryPatientRepository implements PatientRepository {
             }
         }
         return result;
+    }
+
+    @Override
+    public List<Patient> getAllPatients() {
+        return new ArrayList<>(patients.values());
     }
 }

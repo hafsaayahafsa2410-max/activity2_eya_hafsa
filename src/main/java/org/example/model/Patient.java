@@ -10,6 +10,7 @@ public class Patient {
     private String name;
     private int age;
     private int doctorId;
+    private String aiSummary; // 🔹 NEW FIELD
 
     public Patient(int id, String name, int age, int doctorId) {
         this.id = id;
@@ -22,12 +23,19 @@ public class Patient {
     public String getName() { return name; }
     public int getAge() { return age; }
     public int getDoctorId() { return doctorId; }
+    public String getAiSummary() { return aiSummary; }
 
     public void setName(String name) { this.name = name; }
     public void setAge(int age) { this.age = age; }
+    public void setAiSummary(String aiSummary) { this.aiSummary = aiSummary; }
 
     @Override
     public String toString() {
-        return "Patient{id=" + id + ", name='" + name + "', age=" + age + ", doctorId=" + doctorId + "}";
+        return "Patient{id=" + id +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                ", doctorId=" + doctorId +
+                ", aiSummary='" + aiSummary + '\'' +
+                '}';
     }
 }

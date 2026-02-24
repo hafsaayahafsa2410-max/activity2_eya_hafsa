@@ -2,8 +2,8 @@ package org.example.model;
 /*
  * Doctor.java
  * This class represents a Doctor in our system.
- * It’s basically the “data object” for a doctor (id, name, specialty).
- * we keep it simple with constructors, getters/setters, and toString() so it prints nicely in the CLI.
+ * It’s the “data object” for a doctor (id, name, specialty).
+ * we keep it simple with constructors, getters/setters, and toString().
  */
 
 public class Doctor {
