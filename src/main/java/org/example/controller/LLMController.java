@@ -1,41 +1,25 @@
 package org.example.controller;
-
-import org.example.business.LLMService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
+import org.example.messaging.LlmProducer;
+import org.example.model.LlmRequestMessage;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/llm")
 public class LLMController {
 
-    private final LLMService llmService;
+    private final LlmProducer llmProducer;
 
-    public LLMController(LLMService llmService) {
-        this.llmService = llmService;
+    public LLMController(LlmProducer llmProducer) {
+        this.llmProducer = llmProducer;
     }
 
     @PostMapping("/generate")
-    public ResponseEntity<?> generate(@RequestBody Map<String, String> request) {
+    public ResponseEntity<String> generate(@RequestBody String prompt) {
 
-        try {
-            String prompt = request.get("prompt");
+        llmProducer.sendMessage(prompt);
 
-            if (prompt == null || prompt.isEmpty()) {
-                return ResponseEntity.badRequest()
-                        .body(Map.of("error", "Prompt cannot be empty"));
-            }
-
-            String response = llmService.generateFromPrompt(prompt);
-
-            return ResponseEntity.ok(Map.of(
-                    "generatedText", response
-            ));
-
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError()
-                    .body(Map.of("error", "Failed to generate response"));
-        }
+        return ResponseEntity.ok("Request sent to queue. Processing asynchronously.");
     }
 }
