@@ -1,29 +1,26 @@
 package org.example.business;
-/*
- * DoctorManager.java
- * This is where our “logic” for doctors lives.
- * The important part is: it talks to DoctorRepository (the interface), not the in-memory class directly.
- * It basically controls doctor operations and can be the place to add validation/rules later.
- */
-import org.example.data.DoctorRepository;
+
+import org.example.data.DoctorRepositoryJPA;
 import org.example.model.Doctor;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
 public class DoctorManager {
-    private DoctorRepository repo;
+    private final DoctorRepositoryJPA repo;
 
-    public DoctorManager(DoctorRepository repo) {
-        this.repo = repo;
+    public DoctorManager(DoctorRepositoryJPA repo) { this.repo = repo; }
+
+    public Doctor save(Doctor d) { return repo.save(d); }
+    public Doctor update(Doctor d) { return repo.save(d); }
+    public boolean delete(int id) {
+        if (!repo.existsById(id)) return false;
+        repo.deleteById(id);
+        return true;
     }
-
-    public Doctor save(Doctor a) { return repo.save(a); }
-    public Doctor update(Doctor a) { return repo.update(a); }
-    public boolean delete(int id) { return repo.delete(id); }
-    public Doctor findById(int id) { return repo.findById(id); }
+    public Doctor findById(int id) { return repo.findById(id).orElse(null); }
     public long count() { return repo.count(); }
     public List<Doctor> listSorted() { return repo.findAllByOrderByName(); }
     public List<Doctor> findByName(String name) { return repo.findByName(name); }
+    public List<Doctor> findBySpecialty(String s) { return repo.findBySpecialty(s); }
 }
