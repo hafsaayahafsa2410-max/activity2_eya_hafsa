@@ -1,41 +1,54 @@
 package org.example.model;
-/*
- * Patient.java
- * This class represents a Patient.
- * It stores basic patient info (id, name, age) and also doctorId to connect the patient to a doctor.
- * Same idea as Doctor: clean fields, getters/setters, and toString() for readable output.
- */
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "patients")
 public class Patient {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
     private int age;
-    private int doctorId;
-    private String aiSummary; // 🔹 NEW FIELD
+    private String aiSummary;
 
-    public Patient(int id, String name, int age, int doctorId) {
-        this.id = id;
+    @ManyToOne
+    @JoinColumn(name = "doctor_id")
+    @JsonBackReference
+    private Doctor doctor;
+
+    public Patient() {}
+    public Patient(String name, int age) {
         this.name = name;
         this.age = age;
-        this.doctorId = doctorId;
+    }
+
+    public void addDoctor(Doctor d) {
+        this.doctor = d;
+        if (!d.getPatients().contains(this)) {
+            d.getPatients().add(this);
+        }
+    }
+
+    public void removeDoctor() {
+        if (this.doctor != null) {
+            this.doctor.getPatients().remove(this);
+            this.doctor = null;
+        }
     }
 
     public int getId() { return id; }
     public String getName() { return name; }
     public int getAge() { return age; }
-    public int getDoctorId() { return doctorId; }
     public String getAiSummary() { return aiSummary; }
+    public Doctor getDoctor() { return doctor; }
+    public int getDoctorId() { return (doctor != null) ? doctor.getId() : 0; }
 
+    public void setId(int id) { this.id = id; }
     public void setName(String name) { this.name = name; }
     public void setAge(int age) { this.age = age; }
     public void setAiSummary(String aiSummary) { this.aiSummary = aiSummary; }
-
-    @Override
-    public String toString() {
-        return "Patient{id=" + id +
-                ", name='" + name + '\'' +
-                ", age=" + age +
-                ", doctorId=" + doctorId +
-                ", aiSummary='" + aiSummary + '\'' +
-                '}';
-    }
+    public void setDoctor(Doctor doctor) { this.doctor = doctor; }
 }
