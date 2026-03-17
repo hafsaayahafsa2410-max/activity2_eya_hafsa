@@ -1,31 +1,47 @@
 package org.example.model;
-/*
- * Doctor.java
- * This class represents a Doctor in our system.
- * It’s the “data object” for a doctor (id, name, specialty).
- * we keep it simple with constructors, getters/setters, and toString().
- */
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+@Table(name = "doctors")
 public class Doctor {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
     private String specialty;
 
-    public Doctor(int id, String name, String specialty) {
-        this.id = id;
+    @OneToMany(mappedBy = "doctor", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<Patient> patients = new ArrayList<>();
+
+    public Doctor() {}
+    public Doctor(String name, String specialty) {
         this.name = name;
         this.specialty = specialty;
+    }
+
+    public void addPatient(Patient patient) {
+        patients.add(patient);
+        patient.setDoctor(this);
+    }
+
+    public void removePatient(Patient patient) {
+        patients.remove(patient);
+        patient.setDoctor(null);
     }
 
     public int getId() { return id; }
     public String getName() { return name; }
     public String getSpecialty() { return specialty; }
+    public List<Patient> getPatients() { return patients; }
 
+    public void setId(int id) { this.id = id; }
     public void setName(String name) { this.name = name; }
     public void setSpecialty(String specialty) { this.specialty = specialty; }
-
-    @Override
-    public String toString() {
-        return "Doctor{id=" + id + ", name='" + name + "', specialty='" + specialty + "'}";
-    }
+    public void setPatients(List<Patient> patients) { this.patients = patients; }
 }
