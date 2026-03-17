@@ -5,7 +5,6 @@ import org.example.model.Doctor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -18,53 +17,53 @@ public class DoctorController {
         this.app = app;
     }
 
-    // CREATE
     @PostMapping
     public ResponseEntity<Doctor> create(@RequestBody Doctor doctor) {
-        Doctor saved = app.saveDoctor(doctor);
-        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
+        return ResponseEntity.status(HttpStatus.CREATED).body(app.saveDoctor(doctor));
     }
 
-    // READ by id
     @GetMapping("/{id}")
     public ResponseEntity<Doctor> getById(@PathVariable int id) {
         Doctor d = app.findDoctorById(id);
         return (d != null) ? ResponseEntity.ok(d) : ResponseEntity.notFound().build();
     }
 
-    // COUNT
     @GetMapping("/count")
-    public long count() {
-        return app.countDoctors();
-    }
+    public long count() { return app.countDoctors(); }
 
-    // LIST sorted
     @GetMapping
-    public List<Doctor> listSorted() {
-        return app.listDoctorsSortedByName();
-    }
+    public List<Doctor> listSorted() { return app.listDoctorsSortedByName(); }
 
-    // SEARCH by name
     @GetMapping("/search")
-    public List<Doctor> search(@RequestParam String name) {
-        return app.findDoctorsByName(name);
-    }
+    public List<Doctor> search(@RequestParam String name) { return app.findDoctorsByName(name); }
 
-    // UPDATE
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable int id, @RequestBody Doctor doctor) {
-        if (doctor.getId() != id) {
-            return ResponseEntity.badRequest().body("Path ID and body ID do not match.");
-        }
-        Doctor updated = app.updateDoctor(doctor);
-        return ResponseEntity.ok(updated);
+    public ResponseEntity<Doctor> update(@PathVariable int id, @RequestBody Doctor doctor) {
+        doctor.setId(id);
+        return ResponseEntity.ok(app.updateDoctor(doctor));
     }
 
-    // DELETE
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable int id) {
-        boolean ok = app.deleteDoctor(id);
-        return ok ? ResponseEntity.noContent().build()
-                : ResponseEntity.notFound().build();
+        return app.deleteDoctor(id) ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
+    }
+
+    @PutMapping("/{doctorId}/patients/{patientId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void addPatientToDoctor(@PathVariable int doctorId, @PathVariable int patientId) {
+        app.assignPatientToDoctor(doctorId, patientId);
+    }
+
+    @DeleteMapping("/{doctorId}/patients/{patientId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void removePatientFromDoctor(@PathVariable int doctorId, @PathVariable int patientId) {
+        app.removePatientFromDoctor(doctorId, patientId);
+    }
+
+    @GetMapping("/{doctorId}/patients")
+    public ResponseEntity<List<?>> getPatientsOfDoctor(@PathVariable int doctorId) {
+        Doctor d = app.findDoctorById(doctorId);
+        if (d == null) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(app.findPatientsByDoctor(doctorId));
     }
 }
