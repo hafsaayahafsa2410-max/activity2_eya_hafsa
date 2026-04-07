@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"><title>Doctors</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 900px; margin: 40px auto; padding: 0 20px; }
+        h1 { color: #1565C0; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th { background: #1565C0; color: white; padding: 10px; text-align: left; }
+        td { padding: 10px; border-bottom: 1px solid #eee; }
+        a.btn { display: inline-block; padding: 6px 14px; border-radius: 4px; text-decoration: none; font-size: 13px; margin-right: 4px; }
+        a.btn-blue { background: #1565C0; color: white; }
+        a.btn-green { background: #2E7D32; color: white; }
+        a.btn-orange { background: #E65100; color: white; }
+        form { display: inline; }
+        button.btn-red { background: #C62828; color: white; border: none; padding: 6px 14px; border-radius: 4px; cursor: pointer; font-size: 13px; }
+        .nav a { color: #1565C0; text-decoration: none; margin-right: 16px; }
+    </style>
+</head>
+<body>
+    <div class="nav"><a href="/ui">Home</a><a href="/ui/patients">Patients</a></div>
+    <h1>Doctors</h1>
+    <a class="btn btn-green" href="/ui/doctors/new">+ Add New Doctor</a>
+    <table>
+        <tr><th>ID</th><th>Name</th><th>Specialty</th><th>Actions</th></tr>
+        <tr th:each="doctor : ${doctors}">
+            <td th:text="${doctor.id}"></td>
+            <td th:text="${doctor.name}"></td>
+            <td th:text="${doctor.specialty}"></td>
+            <td>
+                <a class="btn btn-blue" th:href="@{/ui/doctors/{id}/edit(id=${doctor.id})}">Edit</a>
+                <a class="btn btn-orange" th:href="@{/ui/doctors/{id}/patients(id=${doctor.id})}">Patients</a>
+                <form th:action="@{/ui/doctors/{id}/delete(id=${doctor.id})}" method="post">
+                    <button class="btn-red" type="submit" onclick="return confirm('Delete?')">Delete</button>
+                </form>
+            </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(doctors)}">
+            <td colspan="4" style="text-align:center;color:#999;">No doctors yet.</td>
+        </tr>
+    </table>
+</body>
+</html>
