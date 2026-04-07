@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"><title>Patient Form</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 500px; margin: 40px auto; padding: 0 20px; }
+        h1 { color: #1565C0; }
+        label { display: block; margin-top: 16px; font-weight: bold; }
+        input { width: 100%; padding: 10px; margin-top: 6px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; box-sizing: border-box; }
+        button { margin-top: 24px; background: #1565C0; color: white; border: none; padding: 10px 24px; border-radius: 4px; cursor: pointer; font-size: 14px; }
+        .nav a { color: #1565C0; text-decoration: none; margin-right: 16px; }
+        a { color: #1565C0; }
+    </style>
+</head>
+<body>
+    <div class="nav"><a href="/ui">Home</a><a href="/ui/patients">Patients</a></div>
+    <h1 th:text="${patient.id != 0} ? 'Edit Patient' : 'New Patient'">Patient Form</h1>
+    <form th:action="${patient.id != 0} ? @{/ui/patients/{id}/edit(id=${patient.id})} : @{/ui/patients/new}"
+          th:object="${patient}" method="post">
+        <label>Name</label>
+        <input type="text" th:field="*{name}" placeholder="e.g. Alice" required/>
+        <label>Age</label>
+        <input type="number" th:field="*{age}" placeholder="e.g. 34" min="0" max="150" required/>
+        <button type="submit" th:text="${patient.id != 0} ? 'Update Patient' : 'Save Patient'">Save</button>
+    </form>
+    <br><a href="/ui/patients">← Back to list</a>
+</body>
+</html>
