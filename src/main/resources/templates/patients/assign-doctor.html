@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"><title>Assign Doctor</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 40px auto; padding: 0 20px; }
+        h1,h2 { color: #1565C0; } h2 { font-size: 18px; margin-top: 30px; }
+        select { padding: 8px; border-radius: 4px; border: 1px solid #ccc; font-size: 14px; width: 100%; margin-top: 8px; }
+        button.btn-green { background: #2E7D32; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; margin-top: 12px; }
+        button.btn-red { background: #C62828; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; margin-top: 12px; }
+        .current { background: #E3F2FD; border-radius: 6px; padding: 16px; margin-top: 12px; }
+        .no-doctor { color: #999; font-style: italic; }
+        .nav a { color: #1565C0; text-decoration: none; margin-right: 16px; }
+        a { color: #1565C0; }
+    </style>
+</head>
+<body>
+    <div class="nav"><a href="/ui">Home</a><a href="/ui/patients">Patients</a><a href="/ui/doctors">Doctors</a></div>
+    <h1>Manage Doctor for <span th:text="${patient.name}"></span></h1>
+    <h2>Current Doctor</h2>
+    <div class="current">
+        <p th:if="${patient.doctorId != 0}">Assigned to Doctor ID: <strong th:text="${patient.doctorId}"></strong></p>
+        <p th:if="${patient.doctorId == 0}" class="no-doctor">No doctor assigned yet.</p>
+    </div>
+    <div th:if="${patient.doctorId != 0}">
+        <form th:action="@{/ui/patients/{id}/doctor/remove(id=${patient.id})}" method="post">
+            <button class="btn-red" type="submit" onclick="return confirm('Remove doctor?')">Remove Doctor</button>
+        </form>
+    </div>
+    <h2>Assign a Doctor</h2>
+    <form th:action="@{/ui/patients/{id}/doctor/assign(id=${patient.id})}" method="post">
+        <select name="doctorId" required>
+            <option value="">-- Select a doctor --</option>
+            <option th:each="d : ${doctors}" th:value="${d.id}" th:text="${d.name} + ' — ' + ${d.specialty}"></option>
+        </select>
+        <button class="btn-green" type="submit">Assign Doctor</button>
+    </form>
+    <br><a href="/ui/patients">← Back to patients</a>
+</body>
+</html>
